@@ -38,4 +38,43 @@ Seattle Seahawks
 Chicago Bears
 New Orleans Saints
 
+Conrad J
+Detroit Lions
+Tampa Bay Buccaneers
+Buffalo Bills
+Houston Texans
+Kansas City Chiefs
+Washington Commanders
+Los Angeles Rams
+Cincinnati Bengals
+
+JP
+Los Angeles Rams
+Baltimore Ravens
+Buffalo Bills
+Philadelphia Eagles
+Kansas City Chiefs
+Seattle Seahawks
+Cincinnati Bengals
+Houston Texans
+
+Alli
+Los Angeles Rams
+Baltimore Ravens
+Buffalo Bills
+Philadelphia Eagles
+Kansas City Chiefs
+Seattle Seahawks
+Jacksonville Jaguars
+Detroit Lions
+
+Patrick
+Buffalo Bills
+Baltimore Ravens
+Houston Texans
+Kansas City Chiefs
+Philadelphia Eagles
+Detroit Lions
+Tampa Bay Buccaneers
+Los Angeles Rams
 
