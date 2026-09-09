@@ -51,7 +51,7 @@ def test_renders_team_logo_and_pickers():
 def test_renders_season_and_updated_timestamp():
     html = render_page(BETTER_ROWS, TEAM_ROWS, season=2026, generated_at=GENERATED_AT)
     assert "2026" in html
-    assert "2026-09-08 12:00:00 UTC" in html
+    assert "2026-09-08 08:00:00 EDT" in html
 
 
 def test_escapes_html_in_better_names():

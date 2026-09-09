@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from jinja2 import Environment
 
@@ -30,9 +31,11 @@ _TEMPLATE = """<!DOCTYPE html>
   th:last-child { border-top-right-radius: 8px; }
   td { padding: 10px; border-bottom: 1px solid #334155; }
   img.logo { max-width: 28px; height: auto; }
-  .better-link { color: #38bdf8; cursor: pointer; }
-  .better-link:hover { text-decoration: underline; }
-  .active-filter { color: #f472b6; font-weight: 700; }
+  .better-link { display: inline-block; color: #e2e8f0; cursor: pointer; background: #334155;
+                 border: 1px solid #475569; border-radius: 999px; padding: 2px 9px;
+                 font-size: 0.72rem; line-height: 1.5; margin: 2px 2px 2px 0; }
+  .better-link:hover { background: #475569; border-color: #64748b; }
+  .active-filter { color: #0f172a; background: #f472b6; border-color: #f472b6; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -96,7 +99,7 @@ _TEMPLATE = """<!DOCTYPE html>
           <td>{{ row.division_losses }}</td>
           <td>{{ row.games_played }}</td>
           <td>
-            {% for picker in row.pickers %}<span class="better-link" data-better="{{ picker }}">{{ picker }}</span>{% if not loop.last %}, {% endif %}{% endfor %}
+            {% for picker in row.pickers %}<span class="better-link" data-better="{{ picker }}">{{ picker }}</span>{% endfor %}
           </td>
         </tr>
         {% endfor %}
@@ -124,13 +127,16 @@ function sortTable(tableId, columnIndex, numeric = true) {
   table.dataset.sortDir = dir;
 }
 
+let activeBetterFilter = null;
+
 function filterByBetter(name) {
+  activeBetterFilter = activeBetterFilter === name ? null : name;
   const rows = document.getElementById("teams").tBodies[0].rows;
   for (const row of rows) {
-    row.style.display = row.cells[7].innerText.includes(name) ? "" : "none";
+    row.style.display = !activeBetterFilter || row.cells[7].innerText.includes(activeBetterFilter) ? "" : "none";
   }
   document.querySelectorAll(".better-link").forEach(el => {
-    el.classList.toggle("active-filter", el.textContent === name);
+    el.classList.toggle("active-filter", el.textContent === activeBetterFilter);
   });
 }
 
@@ -171,5 +177,7 @@ def render_page(
         better_rows=better_rows,
         team_rows=team_rows,
         season=season,
-        generated_at=generated_at.strftime("%Y-%m-%d %H:%M:%S UTC"),
+        generated_at=generated_at.astimezone(ZoneInfo("America/New_York")).strftime(
+            "%Y-%m-%d %H:%M:%S %Z"
+        ),
     )
