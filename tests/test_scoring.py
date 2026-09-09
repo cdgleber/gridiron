@@ -10,6 +10,7 @@ from gridiron.scoring import (
     better_score,
     better_wins,
     build_better_rows,
+    build_popularity_rows,
     build_team_rows,
 )
 
@@ -67,3 +68,14 @@ def test_build_team_rows_includes_unpicked_teams_and_pickers():
     assert by_name["Buffalo Bills"].pickers == ["Alice"]
     assert by_name["Philadelphia Eagles"].pickers == ["Bob"]
     assert [row.name for row in rows] == sorted(by_name)
+
+
+def test_build_popularity_rows_sorted_by_pick_count_descending():
+    carol = Better("Carol", ["Buffalo Bills"])
+    team_rows = build_team_rows([ALICE, BOB, carol], TEAMS)
+    rows = build_popularity_rows(team_rows)
+    assert rows[0].name == "Buffalo Bills"
+    assert rows[0].pick_count == 2
+    # remaining teams (1 pick each) come next, alphabetically
+    assert [row.name for row in rows[1:]] == ["Dallas Cowboys", "Miami Dolphins", "Philadelphia Eagles"]
+    assert all(row.pick_count == 1 for row in rows[1:])

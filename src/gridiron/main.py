@@ -7,7 +7,7 @@ from pathlib import Path
 from gridiron.espn import Team, fetch_standings
 from gridiron.picks import parse_picks, validate_picks
 from gridiron.render import render_page
-from gridiron.scoring import build_better_rows, build_team_rows
+from gridiron.scoring import build_better_rows, build_popularity_rows, build_team_rows
 
 
 def generate_html(
@@ -20,7 +20,8 @@ def generate_html(
     validate_picks(betters)
     better_rows = build_better_rows(betters, teams)
     team_rows = build_team_rows(betters, teams)
-    return render_page(better_rows, team_rows, season, generated_at)
+    popularity_rows = build_popularity_rows(team_rows)
+    return render_page(better_rows, team_rows, popularity_rows, season, generated_at)
 
 
 def run(season: int, picks_path: Path, output_path: Path) -> None:

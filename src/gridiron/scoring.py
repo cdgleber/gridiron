@@ -63,6 +63,13 @@ class TeamRow:
     pickers: list[str]
 
 
+@dataclass
+class PopularityRow:
+    name: str
+    logo_url: str
+    pick_count: int
+
+
 def build_better_rows(betters: list[Better], teams: dict[str, Team]) -> list[BetterRow]:
     rows = [
         BetterRow(
@@ -100,4 +107,13 @@ def build_team_rows(betters: list[Better], teams: dict[str, Team]) -> list[TeamR
         for team in teams.values()
     ]
     rows.sort(key=lambda row: row.name)
+    return rows
+
+
+def build_popularity_rows(team_rows: list[TeamRow]) -> list[PopularityRow]:
+    rows = [
+        PopularityRow(name=row.name, logo_url=row.logo_url, pick_count=len(row.pickers))
+        for row in team_rows
+    ]
+    rows.sort(key=lambda row: (-row.pick_count, row.name))
     return rows

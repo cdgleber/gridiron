@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f172a">
 <title>NFL Pool Standings</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -14,19 +15,30 @@
   .card { background: #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 24px; }
   h2 { font-size: 1.2rem; margin-bottom: 12px; }
   input.search { padding: 8px 14px; border-radius: 8px; border: 1px solid #334155;
-                 background: #0f172a; color: #e2e8f0; margin-bottom: 12px; width: 100%; max-width: 320px; }
-  table { width: 100%; border-collapse: collapse; }
+                 background: #0f172a; color: #e2e8f0; margin-bottom: 12px; width: 100%;
+                 max-width: 320px; font-size: 16px; }
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .table-wrap.scroll-y { max-height: 60vh; overflow-y: auto; }
+  table { width: 100%; min-width: 480px; border-collapse: collapse; }
   th { text-align: left; padding: 10px; cursor: pointer; background: #334155;
-       position: sticky; top: 0; }
+       position: sticky; top: 0; white-space: nowrap; }
   th:first-child { border-top-left-radius: 8px; }
   th:last-child { border-top-right-radius: 8px; }
   td { padding: 10px; border-bottom: 1px solid #334155; }
-  img.logo { max-width: 28px; height: auto; }
+  td:nth-child(2) { white-space: nowrap; }
+  img.logo { max-width: 28px; height: auto; display: block; }
   .better-link { display: inline-block; color: #e2e8f0; cursor: pointer; background: #334155;
-                 border: 1px solid #475569; border-radius: 999px; padding: 2px 9px;
+                 border: 1px solid #475569; border-radius: 999px; padding: 4px 10px;
                  font-size: 0.72rem; line-height: 1.5; margin: 2px 2px 2px 0; }
   .better-link:hover { background: #475569; border-color: #64748b; }
   .active-filter { color: #0f172a; background: #f472b6; border-color: #f472b6; font-weight: 700; }
+
+  @media (max-width: 600px) {
+    body { padding: 12px; }
+    .card { padding: 14px; margin-bottom: 16px; border-radius: 10px; }
+    h1 { font-size: 1.4rem; }
+    th, td { padding: 8px; font-size: 0.9rem; }
+  }
 </style>
 </head>
 <body>
@@ -37,15 +49,16 @@
   <div class="card">
     <h2>Leaderboard</h2>
     <input class="search" id="searchBetters" placeholder="Search betters...">
+    <div class="table-wrap">
     <table id="betters">
       <thead>
         <tr>
-          <th onclick="sortTable('betters', 0, false)">Better</th>
-          <th onclick="sortTable('betters', 1)">Score</th>
-          <th onclick="sortTable('betters', 2)">Wins</th>
-          <th onclick="sortTable('betters', 3)">Losses</th>
-          <th onclick="sortTable('betters', 4)">Div Losses</th>
-          <th onclick="sortTable('betters', 5)">Games Played</th>
+          <th scope="col" onclick="sortTable('betters', 0, false)">Better</th>
+          <th scope="col" onclick="sortTable('betters', 1)">Score</th>
+          <th scope="col" onclick="sortTable('betters', 2)">Wins</th>
+          <th scope="col" onclick="sortTable('betters', 3)">Losses</th>
+          <th scope="col" onclick="sortTable('betters', 4)">Div Losses</th>
+          <th scope="col" onclick="sortTable('betters', 5)">Games Played</th>
         </tr>
       </thead>
       <tbody>
@@ -124,22 +137,24 @@
         
       </tbody>
     </table>
+    </div>
   </div>
 
   <div class="card">
     <h2>Teams</h2>
     <input class="search" id="searchTeams" placeholder="Search teams...">
+    <div class="table-wrap scroll-y">
     <table id="teams">
       <thead>
         <tr>
-          <th></th>
-          <th onclick="sortTable('teams', 1, false)">Team</th>
-          <th onclick="sortTable('teams', 2)">Score</th>
-          <th onclick="sortTable('teams', 3)">Wins</th>
-          <th onclick="sortTable('teams', 4)">Losses</th>
-          <th onclick="sortTable('teams', 5)">Div Losses</th>
-          <th onclick="sortTable('teams', 6)">Games Played</th>
-          <th>Betters</th>
+          <th scope="col"></th>
+          <th scope="col" onclick="sortTable('teams', 1, false)">Team</th>
+          <th scope="col" onclick="sortTable('teams', 2)">Score</th>
+          <th scope="col" onclick="sortTable('teams', 3)">Wins</th>
+          <th scope="col" onclick="sortTable('teams', 4)">Losses</th>
+          <th scope="col" onclick="sortTable('teams', 5)">Div Losses</th>
+          <th scope="col" onclick="sortTable('teams', 6)">Games Played</th>
+          <th scope="col">Betters</th>
         </tr>
       </thead>
       <tbody>
@@ -562,6 +577,217 @@
         
       </tbody>
     </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Team Popularity</h2>
+    <div class="table-wrap scroll-y">
+    <table id="popularity">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col" onclick="sortTable('popularity', 1, false)">Team</th>
+          <th scope="col" onclick="sortTable('popularity', 2)">Picks</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/buf.png" alt=""></td>
+          <td>Buffalo Bills</td>
+          <td>8</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/lar.png" alt=""></td>
+          <td>Los Angeles Rams</td>
+          <td>7</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/hou.png" alt=""></td>
+          <td>Houston Texans</td>
+          <td>6</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/sea.png" alt=""></td>
+          <td>Seattle Seahawks</td>
+          <td>6</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/bal.png" alt=""></td>
+          <td>Baltimore Ravens</td>
+          <td>5</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/det.png" alt=""></td>
+          <td>Detroit Lions</td>
+          <td>4</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/kc.png" alt=""></td>
+          <td>Kansas City Chiefs</td>
+          <td>4</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/phi.png" alt=""></td>
+          <td>Philadelphia Eagles</td>
+          <td>4</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/den.png" alt=""></td>
+          <td>Denver Broncos</td>
+          <td>3</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/jax.png" alt=""></td>
+          <td>Jacksonville Jaguars</td>
+          <td>3</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/tb.png" alt=""></td>
+          <td>Tampa Bay Buccaneers</td>
+          <td>3</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/chi.png" alt=""></td>
+          <td>Chicago Bears</td>
+          <td>2</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/cin.png" alt=""></td>
+          <td>Cincinnati Bengals</td>
+          <td>2</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/ne.png" alt=""></td>
+          <td>New England Patriots</td>
+          <td>2</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/dal.png" alt=""></td>
+          <td>Dallas Cowboys</td>
+          <td>1</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/gb.png" alt=""></td>
+          <td>Green Bay Packers</td>
+          <td>1</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/lac.png" alt=""></td>
+          <td>Los Angeles Chargers</td>
+          <td>1</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/no.png" alt=""></td>
+          <td>New Orleans Saints</td>
+          <td>1</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png" alt=""></td>
+          <td>Washington Commanders</td>
+          <td>1</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/ari.png" alt=""></td>
+          <td>Arizona Cardinals</td>
+          <td>0</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/atl.png" alt=""></td>
+          <td>Atlanta Falcons</td>
+          <td>0</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/car.png" alt=""></td>
+          <td>Carolina Panthers</td>
+          <td>0</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/cle.png" alt=""></td>
+          <td>Cleveland Browns</td>
+          <td>0</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/ind.png" alt=""></td>
+          <td>Indianapolis Colts</td>
+          <td>0</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/lv.png" alt=""></td>
+          <td>Las Vegas Raiders</td>
+          <td>0</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/mia.png" alt=""></td>
+          <td>Miami Dolphins</td>
+          <td>0</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/min.png" alt=""></td>
+          <td>Minnesota Vikings</td>
+          <td>0</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png" alt=""></td>
+          <td>New York Giants</td>
+          <td>0</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png" alt=""></td>
+          <td>New York Jets</td>
+          <td>0</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/pit.png" alt=""></td>
+          <td>Pittsburgh Steelers</td>
+          <td>0</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/sf.png" alt=""></td>
+          <td>San Francisco 49ers</td>
+          <td>0</td>
+        </tr>
+        
+        <tr>
+          <td><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/ten.png" alt=""></td>
+          <td>Tennessee Titans</td>
+          <td>0</td>
+        </tr>
+        
+      </tbody>
+    </table>
+    </div>
   </div>
 </div>
 

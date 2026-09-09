@@ -5,13 +5,14 @@ from zoneinfo import ZoneInfo
 
 from jinja2 import Environment
 
-from gridiron.scoring import BetterRow, TeamRow
+from gridiron.scoring import BetterRow, PopularityRow, TeamRow
 
 _TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f172a">
 <title>NFL Pool Standings</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,19 +24,30 @@ _TEMPLATE = """<!DOCTYPE html>
   .card { background: #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 24px; }
   h2 { font-size: 1.2rem; margin-bottom: 12px; }
   input.search { padding: 8px 14px; border-radius: 8px; border: 1px solid #334155;
-                 background: #0f172a; color: #e2e8f0; margin-bottom: 12px; width: 100%; max-width: 320px; }
-  table { width: 100%; border-collapse: collapse; }
+                 background: #0f172a; color: #e2e8f0; margin-bottom: 12px; width: 100%;
+                 max-width: 320px; font-size: 16px; }
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .table-wrap.scroll-y { max-height: 60vh; overflow-y: auto; }
+  table { width: 100%; min-width: 480px; border-collapse: collapse; }
   th { text-align: left; padding: 10px; cursor: pointer; background: #334155;
-       position: sticky; top: 0; }
+       position: sticky; top: 0; white-space: nowrap; }
   th:first-child { border-top-left-radius: 8px; }
   th:last-child { border-top-right-radius: 8px; }
   td { padding: 10px; border-bottom: 1px solid #334155; }
-  img.logo { max-width: 28px; height: auto; }
+  td:nth-child(2) { white-space: nowrap; }
+  img.logo { max-width: 28px; height: auto; display: block; }
   .better-link { display: inline-block; color: #e2e8f0; cursor: pointer; background: #334155;
-                 border: 1px solid #475569; border-radius: 999px; padding: 2px 9px;
+                 border: 1px solid #475569; border-radius: 999px; padding: 4px 10px;
                  font-size: 0.72rem; line-height: 1.5; margin: 2px 2px 2px 0; }
   .better-link:hover { background: #475569; border-color: #64748b; }
   .active-filter { color: #0f172a; background: #f472b6; border-color: #f472b6; font-weight: 700; }
+
+  @media (max-width: 600px) {
+    body { padding: 12px; }
+    .card { padding: 14px; margin-bottom: 16px; border-radius: 10px; }
+    h1 { font-size: 1.4rem; }
+    th, td { padding: 8px; font-size: 0.9rem; }
+  }
 </style>
 </head>
 <body>
@@ -46,15 +58,16 @@ _TEMPLATE = """<!DOCTYPE html>
   <div class="card">
     <h2>Leaderboard</h2>
     <input class="search" id="searchBetters" placeholder="Search betters...">
+    <div class="table-wrap">
     <table id="betters">
       <thead>
         <tr>
-          <th onclick="sortTable('betters', 0, false)">Better</th>
-          <th onclick="sortTable('betters', 1)">Score</th>
-          <th onclick="sortTable('betters', 2)">Wins</th>
-          <th onclick="sortTable('betters', 3)">Losses</th>
-          <th onclick="sortTable('betters', 4)">Div Losses</th>
-          <th onclick="sortTable('betters', 5)">Games Played</th>
+          <th scope="col" onclick="sortTable('betters', 0, false)">Better</th>
+          <th scope="col" onclick="sortTable('betters', 1)">Score</th>
+          <th scope="col" onclick="sortTable('betters', 2)">Wins</th>
+          <th scope="col" onclick="sortTable('betters', 3)">Losses</th>
+          <th scope="col" onclick="sortTable('betters', 4)">Div Losses</th>
+          <th scope="col" onclick="sortTable('betters', 5)">Games Played</th>
         </tr>
       </thead>
       <tbody>
@@ -70,22 +83,24 @@ _TEMPLATE = """<!DOCTYPE html>
         {% endfor %}
       </tbody>
     </table>
+    </div>
   </div>
 
   <div class="card">
     <h2>Teams</h2>
     <input class="search" id="searchTeams" placeholder="Search teams...">
+    <div class="table-wrap scroll-y">
     <table id="teams">
       <thead>
         <tr>
-          <th></th>
-          <th onclick="sortTable('teams', 1, false)">Team</th>
-          <th onclick="sortTable('teams', 2)">Score</th>
-          <th onclick="sortTable('teams', 3)">Wins</th>
-          <th onclick="sortTable('teams', 4)">Losses</th>
-          <th onclick="sortTable('teams', 5)">Div Losses</th>
-          <th onclick="sortTable('teams', 6)">Games Played</th>
-          <th>Betters</th>
+          <th scope="col"></th>
+          <th scope="col" onclick="sortTable('teams', 1, false)">Team</th>
+          <th scope="col" onclick="sortTable('teams', 2)">Score</th>
+          <th scope="col" onclick="sortTable('teams', 3)">Wins</th>
+          <th scope="col" onclick="sortTable('teams', 4)">Losses</th>
+          <th scope="col" onclick="sortTable('teams', 5)">Div Losses</th>
+          <th scope="col" onclick="sortTable('teams', 6)">Games Played</th>
+          <th scope="col">Betters</th>
         </tr>
       </thead>
       <tbody>
@@ -105,6 +120,31 @@ _TEMPLATE = """<!DOCTYPE html>
         {% endfor %}
       </tbody>
     </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Team Popularity</h2>
+    <div class="table-wrap scroll-y">
+    <table id="popularity">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col" onclick="sortTable('popularity', 1, false)">Team</th>
+          <th scope="col" onclick="sortTable('popularity', 2)">Picks</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in popularity_rows %}
+        <tr>
+          <td><img class="logo" src="{{ row.logo_url }}" alt=""></td>
+          <td>{{ row.name }}</td>
+          <td>{{ row.pick_count }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
   </div>
 </div>
 
@@ -170,12 +210,14 @@ _template = _env.from_string(_TEMPLATE)
 def render_page(
     better_rows: list[BetterRow],
     team_rows: list[TeamRow],
+    popularity_rows: list[PopularityRow],
     season: int,
     generated_at: datetime,
 ) -> str:
     return _template.render(
         better_rows=better_rows,
         team_rows=team_rows,
+        popularity_rows=popularity_rows,
         season=season,
         generated_at=generated_at.astimezone(ZoneInfo("America/New_York")).strftime(
             "%Y-%m-%d %H:%M:%S %Z"
