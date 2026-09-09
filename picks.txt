@@ -1,0 +1,11 @@
+Alice
+Buffalo Bills
+Kansas City Chiefs
+Philadelphia Eagles
+San Francisco 49ers
+
+Bob
+Dallas Cowboys
+Baltimore Ravens
+Detroit Lions
+Green Bay Packers
