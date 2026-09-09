@@ -46,7 +46,7 @@ _TEMPLATE = """<!DOCTYPE html>
     <table id="betters">
       <thead>
         <tr>
-          <th onclick="sortTable('betters', 0)">Better</th>
+          <th onclick="sortTable('betters', 0, false)">Better</th>
           <th onclick="sortTable('betters', 1)">Score</th>
           <th onclick="sortTable('betters', 2)">Wins</th>
           <th onclick="sortTable('betters', 3)">Losses</th>
@@ -76,7 +76,7 @@ _TEMPLATE = """<!DOCTYPE html>
       <thead>
         <tr>
           <th></th>
-          <th onclick="sortTable('teams', 1)">Team</th>
+          <th onclick="sortTable('teams', 1, false)">Team</th>
           <th onclick="sortTable('teams', 2)">Score</th>
           <th onclick="sortTable('teams', 3)">Wins</th>
           <th onclick="sortTable('teams', 4)">Losses</th>
@@ -96,7 +96,7 @@ _TEMPLATE = """<!DOCTYPE html>
           <td>{{ row.division_losses }}</td>
           <td>{{ row.games_played }}</td>
           <td>
-            {% for picker in row.pickers %}<span class="better-link" onclick="filterByBetter('{{ picker }}')">{{ picker }}</span>{% if not loop.last %}, {% endif %}{% endfor %}
+            {% for picker in row.pickers %}<span class="better-link" data-better="{{ picker }}">{{ picker }}</span>{% if not loop.last %}, {% endif %}{% endfor %}
           </td>
         </tr>
         {% endfor %}
@@ -106,10 +106,9 @@ _TEMPLATE = """<!DOCTYPE html>
 </div>
 
 <script>
-function sortTable(tableId, columnIndex) {
+function sortTable(tableId, columnIndex, numeric = true) {
   const table = document.getElementById(tableId);
   const rows = Array.from(table.tBodies[0].rows);
-  const numeric = columnIndex > 0;
   const current = table.dataset.sortCol === String(columnIndex) ? table.dataset.sortDir : "desc";
   const dir = current === "asc" ? "desc" : "asc";
   rows.sort((a, b) => {
@@ -134,6 +133,11 @@ function filterByBetter(name) {
     el.classList.toggle("active-filter", el.textContent === name);
   });
 }
+
+document.getElementById("teams").addEventListener("click", (e) => {
+  const el = e.target.closest(".better-link");
+  if (el) filterByBetter(el.dataset.better);
+});
 
 function wireSearch(inputId, tableId, columnIndex) {
   document.getElementById(inputId).addEventListener("input", (e) => {

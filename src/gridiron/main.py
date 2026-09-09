@@ -29,9 +29,13 @@ def run(season: int, picks_path: Path, output_path: Path) -> None:
     output_path.write_text(html)
 
 
+def _default_season(now: datetime) -> int:
+    return now.year - 1 if now.month < 3 else now.year
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate the NFL pool standings page.")
-    parser.add_argument("--season", type=int, default=datetime.now().year)
+    parser.add_argument("--season", type=int, default=_default_season(datetime.now(timezone.utc)))
     parser.add_argument("--picks", type=Path, default=Path("picks.txt"))
     parser.add_argument("--output", type=Path, default=Path("index.html"))
     args = parser.parse_args()

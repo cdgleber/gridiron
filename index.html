@@ -30,7 +30,7 @@
 <body>
 <div class="container">
   <h1>NFL Pool Standings</h1>
-  <div class="updated">Season 2026 &middot; Updated: 2026-09-09 00:42:01 UTC</div>
+  <div class="updated">Season 2026 &middot; Updated: 2026-09-09 00:49:15 UTC</div>
 
   <div class="card">
     <h2>Leaderboard</h2>
@@ -38,7 +38,7 @@
     <table id="betters">
       <thead>
         <tr>
-          <th onclick="sortTable('betters', 0)">Better</th>
+          <th onclick="sortTable('betters', 0, false)">Better</th>
           <th onclick="sortTable('betters', 1)">Score</th>
           <th onclick="sortTable('betters', 2)">Wins</th>
           <th onclick="sortTable('betters', 3)">Losses</th>
@@ -77,7 +77,7 @@
       <thead>
         <tr>
           <th></th>
-          <th onclick="sortTable('teams', 1)">Team</th>
+          <th onclick="sortTable('teams', 1, false)">Team</th>
           <th onclick="sortTable('teams', 2)">Score</th>
           <th onclick="sortTable('teams', 3)">Wins</th>
           <th onclick="sortTable('teams', 4)">Losses</th>
@@ -123,7 +123,7 @@
           <td>0</td>
           <td>0</td>
           <td>
-            <span class="better-link" onclick="filterByBetter('Bob')">Bob</span>
+            <span class="better-link" data-better="Bob">Bob</span>
           </td>
         </tr>
         
@@ -136,7 +136,7 @@
           <td>0</td>
           <td>0</td>
           <td>
-            <span class="better-link" onclick="filterByBetter('Alice')">Alice</span>
+            <span class="better-link" data-better="Alice">Alice</span>
           </td>
         </tr>
         
@@ -201,7 +201,7 @@
           <td>0</td>
           <td>0</td>
           <td>
-            <span class="better-link" onclick="filterByBetter('Bob')">Bob</span>
+            <span class="better-link" data-better="Bob">Bob</span>
           </td>
         </tr>
         
@@ -227,7 +227,7 @@
           <td>0</td>
           <td>0</td>
           <td>
-            <span class="better-link" onclick="filterByBetter('Bob')">Bob</span>
+            <span class="better-link" data-better="Bob">Bob</span>
           </td>
         </tr>
         
@@ -240,7 +240,7 @@
           <td>0</td>
           <td>0</td>
           <td>
-            <span class="better-link" onclick="filterByBetter('Bob')">Bob</span>
+            <span class="better-link" data-better="Bob">Bob</span>
           </td>
         </tr>
         
@@ -292,7 +292,7 @@
           <td>0</td>
           <td>0</td>
           <td>
-            <span class="better-link" onclick="filterByBetter('Alice')">Alice</span>
+            <span class="better-link" data-better="Alice">Alice</span>
           </td>
         </tr>
         
@@ -422,7 +422,7 @@
           <td>0</td>
           <td>0</td>
           <td>
-            <span class="better-link" onclick="filterByBetter('Alice')">Alice</span>
+            <span class="better-link" data-better="Alice">Alice</span>
           </td>
         </tr>
         
@@ -448,7 +448,7 @@
           <td>0</td>
           <td>0</td>
           <td>
-            <span class="better-link" onclick="filterByBetter('Alice')">Alice</span>
+            <span class="better-link" data-better="Alice">Alice</span>
           </td>
         </tr>
         
@@ -510,10 +510,9 @@
 </div>
 
 <script>
-function sortTable(tableId, columnIndex) {
+function sortTable(tableId, columnIndex, numeric = true) {
   const table = document.getElementById(tableId);
   const rows = Array.from(table.tBodies[0].rows);
-  const numeric = columnIndex > 0;
   const current = table.dataset.sortCol === String(columnIndex) ? table.dataset.sortDir : "desc";
   const dir = current === "asc" ? "desc" : "asc";
   rows.sort((a, b) => {
@@ -538,6 +537,11 @@ function filterByBetter(name) {
     el.classList.toggle("active-filter", el.textContent === name);
   });
 }
+
+document.getElementById("teams").addEventListener("click", (e) => {
+  const el = e.target.closest(".better-link");
+  if (el) filterByBetter(el.dataset.better);
+});
 
 function wireSearch(inputId, tableId, columnIndex) {
   document.getElementById(inputId).addEventListener("input", (e) => {
