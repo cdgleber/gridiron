@@ -1,0 +1,74 @@
+{
+  "children": [
+    {
+      "name": "American Football Conference",
+      "standings": {
+        "entries": [
+          {
+            "team": {
+              "displayName": "Buffalo Bills",
+              "logos": [
+                {"href": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png", "rel": ["full", "default"]}
+              ]
+            },
+            "stats": [
+              {"name": "wins", "value": 10.0, "displayValue": "10"},
+              {"name": "losses", "value": 3.0, "displayValue": "3"},
+              {"name": "divisionWins", "value": 4.0, "displayValue": "4"},
+              {"name": "divisionLosses", "value": 1.0, "displayValue": "1"}
+            ]
+          },
+          {
+            "team": {
+              "displayName": "Miami Dolphins",
+              "logos": [
+                {"href": "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png", "rel": ["full", "default"]}
+              ]
+            },
+            "stats": [
+              {"name": "wins", "value": 4.0, "displayValue": "4"},
+              {"name": "losses", "value": 9.0, "displayValue": "9"},
+              {"name": "divisionWins", "value": 1.0, "displayValue": "1"},
+              {"name": "divisionLosses", "value": 4.0, "displayValue": "4"}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "National Football Conference",
+      "standings": {
+        "entries": [
+          {
+            "team": {
+              "displayName": "Dallas Cowboys",
+              "logos": [
+                {"href": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png", "rel": ["full", "default"]}
+              ]
+            },
+            "stats": [
+              {"name": "wins", "value": 7.0, "displayValue": "7"},
+              {"name": "losses", "value": 6.0, "displayValue": "6"},
+              {"name": "divisionWins", "value": 3.0, "displayValue": "3"},
+              {"name": "divisionLosses", "value": 2.0, "displayValue": "2"}
+            ]
+          },
+          {
+            "team": {
+              "displayName": "Philadelphia Eagles",
+              "logos": [
+                {"href": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png", "rel": ["full", "default"]}
+              ]
+            },
+            "stats": [
+              {"name": "wins", "value": 11.0, "displayValue": "11"},
+              {"name": "losses", "value": 2.0, "displayValue": "2"},
+              {"name": "divisionWins", "value": 5.0, "displayValue": "5"},
+              {"name": "divisionLosses", "value": 0.0, "displayValue": "0"}
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
