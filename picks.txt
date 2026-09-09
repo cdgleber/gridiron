@@ -1,11 +1,41 @@
-Alice
+Conrad D
 Buffalo Bills
-Kansas City Chiefs
-Philadelphia Eagles
-San Francisco 49ers
-
-Bob
-Dallas Cowboys
 Baltimore Ravens
-Detroit Lions
+Philadelphia Eagles
+Seattle Seahawks
+Los Angeles Chargers
+Houston Texans
 Green Bay Packers
+Tampa Bay Buccaneers
+
+Freddie
+Dallas Cowboys
+Buffalo Bills
+New England Patriots
+Jacksonville Jaguars
+Denver Broncos
+Detroit Lions
+Seattle Seahawks
+Los Angeles Rams
+
+Jules
+New England Patriots
+Buffalo Bills
+Chicago Bears
+Denver Broncos
+Jacksonville Jaguars
+Houston Texans
+Seattle Seahawks
+Los Angeles Rams
+
+Mark
+Buffalo Bills
+Baltimore Ravens
+Houston Texans
+Denver Broncos
+Los Angeles Rams
+Seattle Seahawks
+Chicago Bears
+New Orleans Saints
+
+
